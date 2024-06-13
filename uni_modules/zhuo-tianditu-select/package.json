@@ -1,14 +1,18 @@
 {
     "id": "zhuo-tianditu-select",
-    "displayName": "zhuo-tianditu-select",
-    "version": "1.0.0",
-    "description": "zhuo-tianditu-select",
+    "displayName": "天地图位置选择-地名搜索",
+    "version": "1.0.3",
+    "description": "天地图位置选择、查看、地名搜索、逆地理编码查询、地理编码查询，操作简单，提供自定义插槽",
     "keywords": [
-        "zhuo-tianditu-select"
+        "天地图",
+        "位置选择查看",
+        "地名搜索",
+        "逆地理编码查询",
+        "地理编码查询"
     ],
-    "repository": "",
+    "repository": "https://github.com/1503963513/zhuo-tianditu-select",
     "engines": {
-        "HBuilderX": "^3.1.0"
+        "HBuilderX": "^3.7.0"
     },
     "dcloudext": {
         "type": "component-vue",
@@ -24,9 +28,9 @@
             "qq": ""
         },
         "declaration": {
-            "ads": "",
-            "data": "",
-            "permissions": ""
+            "ads": "无",
+            "data": "插件使用的 天地图 SDK会采集数据，详情可参考：http://lbs.tianditu.gov.cn/home.html\"",
+            "permissions": "无"
         },
         "npmurl": ""
     },
@@ -35,9 +39,9 @@
         "encrypt": [],
         "platforms": {
             "cloud": {
-                "tcb": "u",
-                "aliyun": "u",
-                "alipay": "u"
+                "tcb": "y",
+                "aliyun": "y",
+                "alipay": "y"
             },
             "client": {
                 "Vue": {

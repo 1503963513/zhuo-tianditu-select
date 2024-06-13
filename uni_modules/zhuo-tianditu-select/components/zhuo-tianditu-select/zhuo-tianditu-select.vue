@@ -10,7 +10,7 @@
                 <view class="list-header" @touchstart="start" @touchend="end"></view>
                 <view class="list-content">
                     <view v-for="(item, index) in datalist" :key="index" @click="selectCard(item)">
-                        <slot name="cards" :row="item" :index="selectItem"></slot>
+                        <slot name="cards" :row="item" :index="selectItem" @click="selectCard(item)"></slot>
                         <view class="card"
                             :style="{background: item.address === selectItem.address ?'#f3f4f6' :'#FFFFFF'}"
                             v-if="!$slots.cards">
@@ -92,10 +92,25 @@
         },
         methods: {
             open(lon, lat) {
-                this.visible = true
-                this.$nextTick(() => {
-                    this.$refs.tiandituMapRefs.initCharts(lon, lat)
-                })
+                if (lon && lat) {
+                    this.visible = true
+                    this.$nextTick(() => {
+                        this.$refs.tiandituMapRefs.initCharts(lon, lat)
+                    })
+                } else {
+                    console.error('请传入lon, lat')
+                }
+
+            },
+            close() {
+                this.visible = false
+            },
+            upDateLonLat(lon, lat) {
+                if (lon && lat) {
+                    this.$refs.tiandituMapRefs.upDataCharts(lon, lat)
+                } else {
+                    console.error('请传入lon, lat')
+                }
             },
             onConfirm() {
                 if (Object.keys(this.selectItem).length) {

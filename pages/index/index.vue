@@ -10,7 +10,7 @@
         <zhuo-tianditu-select ref="tMap" :icon="icon" :searchType="0" api-key="e122b0518f43b32dcc256edbae20a5d1"
             @onLoad="onLoad" @onSelect="onSelect">
             <!-- 自定义cardList样式 事件有绑定，自己写样式即可 -->
-            <!-- <template v-slot:cards="{row}">{{row.address}}</template> -->
+            <!-- <template v-slot:cards="{row, index}">{{row.address}}</template> -->
         </zhuo-tianditu-select>
     </view>
 </template>
@@ -40,9 +40,19 @@
             },
             onSelect(value) {
                 this.point = value
-                console.log(value)
             },
             selectMap() {
+                // uni.getLocation({
+                //     type: 'wgs84',
+                //     success: function(res) {
+                //         console.log('当前位置的经度：' + res.longitude);
+                //         console.log('当前位置的纬度：' + res.latitude);
+                //         that.$refs.tMap.open(res.longitude, res.latitude);
+                //     },
+                //     fail: function(err) {
+                //         console.log('获取失败');
+                //     },
+                // });
                 this.$refs.tMap.open(104.397894, 31.126855)
             }
         }
