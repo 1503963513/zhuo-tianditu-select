@@ -1,0 +1,1 @@
+<view class="content"><button bindtap="{{a}}"> 选择地图 </button><zhuo-tianditu-select wx:if="{{e}}" class="r" u-r="tMap" bindonLoad="{{c}}" bindonSelect="{{d}}" u-i="1d8812f2-0" bind:__l="__l" u-p="{{e}}"></zhuo-tianditu-select></view>
