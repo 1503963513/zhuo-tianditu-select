@@ -1,0 +1,45 @@
+
+.tianditu-popop.data-v-9b478222 {
+        position: fixed;
+        left: 0;
+        z-index: 403;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+}
+.popup-header.data-v-9b478222 {
+        flex: 1;
+}
+.popup-content.data-v-9b478222 {
+        background-color: #FFFFFF;
+        min-height: 300px;
+        width: 100%;
+        /*     position: absolute;
+        bottom: 0;
+        left: 0; */
+}
+
+    /*base code*/
+.animated.data-v-9b478222 {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+}
+.animated.infinite.data-v-9b478222 {
+        animation-iteration-count: infinite;
+}
+.animated.hinge.data-v-9b478222 {
+        animation-duration: 2s;
+}
+@keyframes fadeInUp-9b478222 {
+0% {
+            opacity: 0;
+            transform: translate3d(0, 100%, 0)
+}
+100% {
+            opacity: 1;
+            transform: none
+}
+}
+.fadeInUp.data-v-9b478222 {
+        animation-name: fadeInUp-9b478222
+}

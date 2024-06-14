@@ -1,0 +1,1 @@
+<view wx:if="{{a}}" class="tianditu-popop data-v-9b478222" style="{{'height:' + c + ';' + ('width:' + d) + ';' + ('top:' + e)}}"><view class="popup-header data-v-9b478222" bindtap="{{b}}"><slot name="header"></slot></view><view class="popup-content fadeInUp animated data-v-9b478222"><slot></slot></view></view>

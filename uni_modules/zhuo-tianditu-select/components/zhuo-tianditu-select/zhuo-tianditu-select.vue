@@ -10,7 +10,12 @@
                 <view class="list-header" @touchstart="start" @touchend="end"></view>
                 <view class="list-content">
                     <view v-for="(item, index) in datalist" :key="index" @click="selectCard(item)">
+                        <!-- #ifdef MP-WEIXIN -->
+                        <slot name="cards" :row="item" :index="selectItem"></slot>
+                        <!-- #endif -->
+                        <!-- #ifdef H5 -->
                         <slot name="cards" :row="item" :index="selectItem" @click="selectCard(item)"></slot>
+                        <!-- #endif -->
                         <view class="card"
                             :style="{background: item.address === selectItem.address ?'#f3f4f6' :'#FFFFFF'}"
                             v-if="!$slots.cards">

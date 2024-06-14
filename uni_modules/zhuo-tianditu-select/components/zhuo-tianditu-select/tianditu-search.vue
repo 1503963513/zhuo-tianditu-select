@@ -139,7 +139,7 @@
     .hearderback {
         display: flex;
         justify-content: space-between;
-        padding: 12px 14px 0 14px;
+        padding: 10px 10px 0 10px;
     }
 
     .back,

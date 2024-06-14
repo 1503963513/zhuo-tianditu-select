@@ -1,0 +1,86 @@
+
+.mask {
+        /* overflow: hidden; */
+        position: fixed;
+        left: 0;
+        background-color: #FFFFFF;
+        z-index: 399;
+}
+
+    /* footer */
+.list-boxd {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 401;
+        right: 0;
+        border-radius: 14px 14px 0 0;
+        background: #FFFFFF;
+        transition: all 1s;
+}
+.list-header {
+        height: 20px;
+        position: relative;
+        border-bottom: 1px solid #f3f4f6;
+        cursor: pointer;
+}
+.list-header::after {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        content: '';
+        height: 6px;
+        width: 60px;
+        border-top: 1px solid #e8e8e8;
+        border-bottom: 1px solid #e8e8e8;
+}
+.list-content {
+        max-height: 50vh;
+        overflow-y: scroll;
+}
+.card {
+        min-height: 44px;
+        padding: 12px;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+}
+.card-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+}
+.card-right {
+        padding-right: 10px;
+}
+.arrow {
+        border-top: 2px solid #666666;
+        border-right: 2px solid #666666;
+        width: 10px;
+        height: 10px;
+        transform: rotate(45deg);
+}
+.card:active {
+        background-color: #f3f4f6;
+}
+.card::after {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        height: 1px;
+        background-color: #e8e8e8;
+        width: 90%;
+}
+.card:last-child::after {
+        height: 0;
+        background-color: #FFFFFF;
+}
+.card-title {
+        font-size: 18px;
+}
+.card-text {
+        color: #e8e8e8;
+        font-size: 13px;
+}

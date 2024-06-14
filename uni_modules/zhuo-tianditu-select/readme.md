@@ -11,7 +11,7 @@
 
 ```html
     <!-- 天地图使用示例 -->
-<zhuo-tianditu-select ref="tMap"api-key="e122b0518f43b32dcc256edbae20a5d1"></zhuo-tianditu-select>
+<zhuo-tianditu-select ref="tMap"api-key="******"></zhuo-tianditu-select>
 ```
 
 
@@ -68,6 +68,8 @@ this.$refs.tMap.open(103.397894, 32.126855)
 
 ### 示列代码
 
+### vue2
+
 ```vue
 <template>
     <view class="content">
@@ -78,7 +80,7 @@ this.$refs.tMap.open(103.397894, 32.126855)
             <view>lat: {{point.location.lat}}</view>
         </view>
         <!-- 天地图使用示例 -->
-        <zhuo-tianditu-select ref="tMap" :icon="icon" :searchType="0" api-key="e122b0518f43b32dcc256edbae20a5d1"
+        <zhuo-tianditu-select ref="tMap" :icon="icon" :searchType="0" api-key="******"
             @onLoad="onLoad" @onSelect="onSelect">
             <!-- 自定义cardList样式 事件有绑定，自己写样式即可 -->
             <!-- <template v-slot:cards="{row, index}">{{row.address}}</template> -->
@@ -128,6 +130,33 @@ this.$refs.tMap.open(103.397894, 32.126855)
             }
         }
     }
+</script>
+```
+
+### Vue3:
+
+```vue
+<template>
+    <view class="content">
+        <button @click="selectMap"> 选择地图 </button>
+        <!-- 天地图使用示例 -->
+        <zhuo-tianditu-select ref="tMap" :icon="state.icon" :searchType="0" api-key="******">
+        </zhuo-tianditu-select>
+    </view>
+</template>
+
+<script setup>
+    import {
+        ref,
+        reactive
+    } from "vue";
+    const tMap = ref()
+    const state = reactive({
+        icon: ''
+    })
+    const selectMap = () => {
+        tMap.value.open(104.397894, 31.126855)
+    };
 </script>
 ```
 

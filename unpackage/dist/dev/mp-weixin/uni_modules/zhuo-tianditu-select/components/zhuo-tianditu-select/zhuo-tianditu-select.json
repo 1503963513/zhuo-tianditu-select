@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "tianditu-map": "./tianditu-map",
+    "tianditu-search-vue": "./tianditu-search"
+  }
+}

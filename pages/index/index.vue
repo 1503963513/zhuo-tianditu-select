@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <button @click="selectMap"> 选择地图 </button>
+        <button @click="selectMap"> 选择位置 </button>
         <view v-if="point.address">
             <view>address: {{point.address}}</view>
             <view>lon: {{point.location.lon}}</view>

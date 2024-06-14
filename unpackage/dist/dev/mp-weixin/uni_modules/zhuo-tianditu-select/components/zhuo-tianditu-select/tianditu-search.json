@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "tianditu-popup-vue": "./tianditu-popup"
+  }
+}

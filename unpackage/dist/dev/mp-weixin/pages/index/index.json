@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "uni-app",
-  "usingComponents": {}
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "zhuo-tianditu-select": "../../uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select"
+  }
 }
