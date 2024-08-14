@@ -54,10 +54,17 @@
 }
 
 
+.search-zhuozhuo[data-v-427bb69a] {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+
+        /* padding-top: 40rpx; */
+}
 .hearderback[data-v-427bb69a] {
         display: flex;
         justify-content: space-between;
-        padding: 10px 10px 0 10px;
+        padding: 10px 10px 10px 10px;
 }
 .back[data-v-427bb69a],
     .confirm[data-v-427bb69a] {
@@ -88,11 +95,11 @@
         left: 0;
         top: 0; */
         width: 100%;
-        height: 44px;
+        height: 40px;
         /* z-index: 402; */
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         background-color: #FFFFFF;
 }
 .search-content[data-v-427bb69a] {
@@ -276,4 +283,11 @@
 .card-text[data-v-aedbc2bd] {
         color: #e8e8e8;
         font-size: 13px;
+}
+
+
+.content {
+        width: 100%;
+        height: 100%;
+        background-color: aqua;
 }

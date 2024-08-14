@@ -1,5 +1,6 @@
 <template>
     <view class="content">
+        <view style="height: 47px;"></view>
         <button @click="selectMap"> 选择位置 </button>
         <view v-if="point.address">
             <view>address: {{point.address}}</view>
@@ -7,8 +8,8 @@
             <view>lat: {{point.location.lat}}</view>
         </view>
         <!-- 天地图使用示例 -->
-        <zhuo-tianditu-select ref="tMap" :icon="icon" :searchType="0" api-key="e122b0518f43b32dcc256edbae20a5d1"
-            @onLoad="onLoad" @onSelect="onSelect">
+        <zhuo-tianditu-select ref="tMap" :search="true" :icon="icon" :searchType="0"
+            api-key="e122b0518f43b32dcc256edbae20a5d1" @onLoad="onLoad" @onSelect="onSelect">
             <!-- 自定义cardList样式 事件有绑定，自己写样式即可 -->
             <!-- <template v-slot:cards="{row, index}">{{row.address}}</template> -->
         </zhuo-tianditu-select>
@@ -39,6 +40,7 @@
                 console.log('天地图加载完成')
             },
             onSelect(value) {
+                console.log('value', value)
                 this.point = value
             },
             selectMap() {
@@ -60,5 +62,9 @@
 </script>
 
 <style>
-
+    .content {
+        width: 100%;
+        height: 100%;
+        background-color: aqua;
+    }
 </style>

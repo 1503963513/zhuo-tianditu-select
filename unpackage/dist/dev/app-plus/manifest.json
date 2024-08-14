@@ -75,6 +75,7 @@
       "style": "dark",
       "background": "#F8F8F8"
     },
+    "arguments": "{\"name\":\"\",\"path\":\"\",\"query\":\"\"}",
     "uniStatistics": {
       "enable": false
     },
@@ -82,7 +83,7 @@
     "uni-app": {
       "control": "uni-v3",
       "vueVersion": "3",
-      "compilerVersion": "4.08",
+      "compilerVersion": "4.24",
       "nvueCompiler": "uni-app",
       "renderer": "auto",
       "nvue": {

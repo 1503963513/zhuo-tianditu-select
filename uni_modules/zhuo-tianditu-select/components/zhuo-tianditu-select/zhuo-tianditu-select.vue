@@ -1,9 +1,12 @@
 <template>
     <view>
         <view v-if="visible" class="mask" :style="{ height: (winHeight)+ 'px',width: winWidth+'px',top: winTop+'px'}">
-            <tiandituSearchVue @onSearch="tianidtuSearch" :searchType="searchType" @onClose="visible = false"
-                @onConfirm="onConfirm"></tiandituSearchVue>
-            <tiandituMap ref="tiandituMapRefs" @onSelect="selectPoint" :apiKey="apiKey" :customIcon="icon">
+            <tiandituSearchVue :showSearch="search"
+                :style="{ height: iStatusBarHeight ?  iStatusBarHeight + 'px' : 'fitcontent', paddingTop: iStatusBarHeight ?  '20px' : '0' }"
+                @onSearch="tianidtuSearch" :searchType="searchType" @onClose="close" @onConfirm="onConfirm">
+            </tiandituSearchVue>
+            <tiandituMap ref="tiandituMapRefs" @onLoadTianDiTu="initMaps" @onSelect="selectPoint" :apiKey="apiKey"
+                :customIcon="icon">
             </tiandituMap>
             <!-- footer -->
             <view class="list-boxd" ref="listBox" :style="{minHeight: domMinHeight, maxHeight: domMaxHeight}">
@@ -13,7 +16,10 @@
                         <!-- #ifdef MP-WEIXIN -->
                         <slot name="cards" :row="item" :index="selectItem"></slot>
                         <!-- #endif -->
-                        <!-- #ifdef H5 -->
+                        <!-- #ifdef H5  -->
+                        <slot name="cards" :row="item" :index="selectItem" @click="selectCard(item)"></slot>
+                        <!-- #endif -->
+                        <!-- #ifdef APP  -->
                         <slot name="cards" :row="item" :index="selectItem" @click="selectCard(item)"></slot>
                         <!-- #endif -->
                         <view class="card"
@@ -53,6 +59,10 @@
                 type: Number,
                 default: 0
             },
+            search: {
+                type: Boolean,
+                default: true
+            },
             icon: {
                 type: String,
                 default: ''
@@ -69,11 +79,28 @@
                 domMaxHeight: '50vh',
                 domMinHeight: '0vh',
                 selectItem: {},
+                iStatusBarHeight: 0,
+                option: {
+                    apikey: 123123,
+                }
             }
         },
         created() {
             var that = this
-            that.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight;
+            // #ifdef APP
+            // 44 + 10 44: search Input height
+            const searchHeight = this.search ? 54 : 10
+            const {
+                statusBarHeight,
+                screenHeight,
+                windowHeight
+            } = uni.getSystemInfoSync()
+            if (screenHeight === windowHeight) {
+                that.iStatusBarHeight = statusBarHeight + searchHeight;
+            } else {
+                that.iStatusBarHeight = 0;
+            }
+            // #endif
             uni.getSystemInfo({
                 success: function(res) {
                     that.winWidth = res.windowWidth
@@ -81,19 +108,6 @@
                     that.winTop = res.windowTop
                 }
             });
-        },
-        mounted() {
-            if (typeof window.T === 'function') {
-                console.warn('--------天地图已加载--------');
-                this.initMaps()
-            } else {
-                if (this.apiKey) {
-                    const script = document.createElement('script')
-                    script.src = 'http://api.tianditu.gov.cn/api?v=4.0&tk=' + this.apiKey
-                    script.onload = this.initMaps.bind(this)
-                    document.head.appendChild(script)
-                }
-            }
         },
         methods: {
             open(lon, lat) {
@@ -110,19 +124,19 @@
             close() {
                 this.visible = false
             },
-            upDateLonLat(lon, lat) {
-                if (lon && lat) {
-                    this.$refs.tiandituMapRefs.upDataCharts(lon, lat)
-                } else {
-                    console.error('请传入lon, lat')
-                }
-            },
             onConfirm() {
                 if (Object.keys(this.selectItem).length) {
                     this.visible = false
                     this.$emit('onSelect', this.selectItem)
                 } else {
                     tools.createMessage('请选择位置')
+                }
+            },
+            upDateLonLat(lon, lat) {
+                if (lon && lat) {
+                    this.$refs.tiandituMapRefs.upDataCharts(lon, lat)
+                } else {
+                    console.error('请传入lon, lat')
                 }
             },
             tianidtuSearch(value) {
@@ -226,6 +240,9 @@
         }
     }
 </script>
+
+
+
 <style scope>
     .mask {
         /* overflow: hidden; */

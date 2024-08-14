@@ -1,7 +1,7 @@
 {
     "id": "zhuo-tianditu-select",
     "displayName": "天地图位置选择-地名搜索",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "description": "天地图位置选择、查看、地名搜索、逆地理编码查询、地理编码查询，操作简单，提供自定义插槽",
     "keywords": [
         "天地图",
@@ -29,7 +29,7 @@
         },
         "declaration": {
             "ads": "无",
-            "data": "插件使用的 天地图 SDK会采集数据，详情可参考：http://lbs.tianditu.gov.cn/home.html\"",
+            "data": "插件不采集任何数据",
             "permissions": "无"
         },
         "npmurl": ""
@@ -49,7 +49,7 @@
                     "vue3": "y"
                 },
                 "App": {
-                    "app-vue": "u",
+                    "app-vue": "y",
                     "app-nvue": "u",
                     "app-uvue": "u"
                 },

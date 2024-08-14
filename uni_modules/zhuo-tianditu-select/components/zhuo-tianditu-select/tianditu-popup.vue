@@ -31,8 +31,14 @@
             uni.getSystemInfo({
                 success: function(res) {
                     that.winWidth = res.windowWidth
-                    that.winHeight = res.windowHeight
                     that.winTop = res.windowTop
+                    // #ifdef H5
+                    that.winHeight = res.windowHeight
+                    // #endif
+                    // #ifdef APP
+                    that.winHeight = res.windowHeight - res.statusBarHeight
+                    // #endif
+
                 }
             });
         },

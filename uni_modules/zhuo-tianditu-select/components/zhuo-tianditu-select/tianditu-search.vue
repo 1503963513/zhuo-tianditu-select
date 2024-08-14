@@ -1,11 +1,11 @@
 <template>
     <view>
-        <view>
+        <view :style="style" class="search-zhuozhuo">
             <view class="hearderback">
                 <view class="back" @click="close">关 闭</view>
                 <view class="confirm" @click="confirm">完 成</view>
             </view>
-            <view class="search">
+            <view class="search" v-show="showSearch">
                 <view class="search-content">
                     <view class="search-icon" v-if="searchType === 0" @click="visible = true">{{city.label}}</view>
                     <input class="search-input" v-model="keyword" placeholder="请输入详细地址" />
@@ -67,6 +67,14 @@
             searchType: {
                 type: Number,
                 default: 0,
+            },
+            style: {
+                type: Object,
+                default: {},
+            },
+            showSearch: {
+                type: Boolean,
+                require: true
             }
         },
         created() {
@@ -136,10 +144,19 @@
 </script>
 
 <style scoped>
+    .search-zhuozhuo {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        /* #ifdef APP */
+        /* padding-top: 40rpx; */
+        /* #endif */
+    }
+
     .hearderback {
         display: flex;
         justify-content: space-between;
-        padding: 10px 10px 0 10px;
+        padding: 10px 10px 10px 10px;
     }
 
     .back,
@@ -175,11 +192,11 @@
         left: 0;
         top: 0; */
         width: 100%;
-        height: 44px;
+        height: 40px;
         /* z-index: 402; */
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         background-color: #FFFFFF;
     }
 

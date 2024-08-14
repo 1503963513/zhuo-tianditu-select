@@ -66,7 +66,11 @@ if (uni.restoreGlobal) {
           if (res.statusCode === 200) {
             resolve(res.data);
           } else {
-            reject(new Error("请求错位"));
+            if (res.data.msg) {
+              const str = typeof res.data.resolve === "string" ? "," + res.data.resolve : "";
+              createMessage(res.data.msg + str);
+            }
+            reject(new Error("请求错误"));
           }
         },
         fail: (err) => {
@@ -116,6 +120,10 @@ if (uni.restoreGlobal) {
     formatterAdressLocation
   };
   const iconPath = "/uni_modules/zhuo-tianditu-select/static/point.png";
+  const block0 = (Comp) => {
+    (Comp.$renderjs || (Comp.$renderjs = [])).push("Trenderjs");
+    (Comp.$renderjsModules || (Comp.$renderjsModules = {}))["Trenderjs"] = "3573ec8f";
+  };
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -124,9 +132,17 @@ if (uni.restoreGlobal) {
     return target;
   };
   const _sfc_main$5 = {
+    name: "TianDiTu-Map",
     data() {
       return {
-        Tmap: null
+        Tmap: null,
+        option: {
+          type: "",
+          apikey: "",
+          lng: "",
+          lat: "",
+          png: iconPath
+        }
       };
     },
     props: {
@@ -140,40 +156,28 @@ if (uni.restoreGlobal) {
         default: ""
       }
     },
-    destroyed() {
-    },
     methods: {
+      compliteonLoadTianDiTu() {
+        this.$emit("onLoadTianDiTu");
+      },
       initCharts(lng, lat) {
-        var that = this;
-        this.Tmap = new T.Map("mapDiv", {
-          projection: "EPSG:4326"
-        });
-        this.Tmap.centerAndZoom(new T.LngLat(lng, lat), 15);
-        that.nextPoint({
+        this.option = {
+          apikey: this.apiKey,
           lng,
-          lat
-        });
-        this.Tmap.addEventListener("click", (e) => {
-          that.nextPoint(e.lnglat);
-        });
+          lat,
+          png: this.customIcon || this.option.png,
+          type: "open"
+        };
       },
       upDataCharts(lng, lat) {
-        this.setIcon(lng, lat, true);
-        this.Tmap.centerAndZoom(new T.LngLat(lng, lat), 15);
-      },
-      setIcon(lng, lat, isClear) {
-        if (isClear) {
-          this.Tmap.clearOverLays();
-        }
-        const icon = new T.Icon({
-          iconUrl: this.customIcon || iconPath,
-          iconSize: new T.Point(30, 30),
-          iconAnchor: new T.Point(15, 30)
-        });
-        const marker = new T.Marker(new T.LngLat(lng, lat), {
-          icon
-        });
-        this.Tmap.addOverLay(marker);
+        this.option = {
+          ...this.option,
+          type: "Icon",
+          lng,
+          lat,
+          png: this.customIcon || this.option.png,
+          type: "update"
+        };
       },
       async nextPoint(lnglat) {
         var that = this;
@@ -188,8 +192,15 @@ if (uni.restoreGlobal) {
         };
         let resData = await tools.createRequest("https://api.tianditu.gov.cn/geocoder", params, true);
         if (resData.status === "0") {
-          this.setIcon(lnglat.lng, lnglat.lat, true);
           const info = tools.formatterAdressLocation(resData.result, 1);
+          this.option = {
+            ...this.option,
+            apikey: this.apiKey,
+            lng: lnglat.lng,
+            lat: lnglat.lat,
+            png: this.customIcon || this.option.png,
+            type: "update"
+          };
           this.$emit("onSelect", info);
         } else {
           tools.createMessage("数据异常", 1e3, false, "error");
@@ -198,8 +209,18 @@ if (uni.restoreGlobal) {
     }
   };
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("view", { id: "mapDiv" });
+    return vue.openBlock(), vue.createElementBlock("view", { style: { "width": "100%", "height": "100%" } }, [
+      vue.createElementVNode("view", {
+        id: "mapDiv",
+        class: "mapDiv",
+        apikey: $props.apiKey,
+        prop: vue.wp($data.option),
+        "change:prop": _ctx.Trenderjs.initTMap
+      }, null, 8, ["apikey", "prop", "change:prop"])
+    ]);
   }
+  if (typeof block0 === "function")
+    block0(_sfc_main$5);
   const tiandituMap = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$4], ["__scopeId", "data-v-a82b27f6"], ["__file", "/Users/shidianzhuo/Hello/HBuilderProjects/tianditu-plugin/uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/tianditu-map.vue"]]);
   const _sfc_main$4 = {
     data() {
@@ -221,8 +242,8 @@ if (uni.restoreGlobal) {
       uni.getSystemInfo({
         success: function(res) {
           that.winWidth = res.windowWidth;
-          that.winHeight = res.windowHeight;
           that.winTop = res.windowTop;
+          that.winHeight = res.windowHeight - res.statusBarHeight;
         }
       });
     },
@@ -13304,6 +13325,14 @@ if (uni.restoreGlobal) {
       searchType: {
         type: Number,
         default: 0
+      },
+      style: {
+        type: Object,
+        default: {}
+      },
+      showSearch: {
+        type: Boolean,
+        require: true
       }
     },
     created() {
@@ -13373,50 +13402,67 @@ if (uni.restoreGlobal) {
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_tiandituPopupVue = vue.resolveComponent("tiandituPopupVue");
     return vue.openBlock(), vue.createElementBlock("view", null, [
-      vue.createElementVNode("view", null, [
-        vue.createElementVNode("view", { class: "hearderback" }, [
-          vue.createElementVNode("view", {
-            class: "back",
-            onClick: _cache[0] || (_cache[0] = (...args) => $options.close && $options.close(...args))
-          }, "关 闭"),
-          vue.createElementVNode("view", {
-            class: "confirm",
-            onClick: _cache[1] || (_cache[1] = (...args) => $options.confirm && $options.confirm(...args))
-          }, "完 成")
-        ]),
-        vue.createElementVNode("view", { class: "search" }, [
-          vue.createElementVNode("view", { class: "search-content" }, [
-            $props.searchType === 0 ? (vue.openBlock(), vue.createElementBlock(
-              "view",
-              {
-                key: 0,
-                class: "search-icon",
-                onClick: _cache[2] || (_cache[2] = ($event) => $data.visible = true)
-              },
-              vue.toDisplayString($data.city.label),
-              1
-              /* TEXT */
-            )) : vue.createCommentVNode("v-if", true),
-            vue.withDirectives(vue.createElementVNode(
-              "input",
-              {
-                class: "search-input",
-                "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $data.keyword = $event),
-                placeholder: "请输入详细地址"
-              },
-              null,
-              512
-              /* NEED_PATCH */
-            ), [
-              [vue.vModelText, $data.keyword]
-            ]),
+      vue.createElementVNode(
+        "view",
+        {
+          style: vue.normalizeStyle($props.style),
+          class: "search-zhuozhuo"
+        },
+        [
+          vue.createElementVNode("view", { class: "hearderback" }, [
             vue.createElementVNode("view", {
-              class: "search-btn",
-              onClick: _cache[4] || (_cache[4] = (...args) => $options.searchKeyword && $options.searchKeyword(...args))
-            }, "搜索")
+              class: "back",
+              onClick: _cache[0] || (_cache[0] = (...args) => $options.close && $options.close(...args))
+            }, "关 闭"),
+            vue.createElementVNode("view", {
+              class: "confirm",
+              onClick: _cache[1] || (_cache[1] = (...args) => $options.confirm && $options.confirm(...args))
+            }, "完 成")
+          ]),
+          vue.withDirectives(vue.createElementVNode(
+            "view",
+            { class: "search" },
+            [
+              vue.createElementVNode("view", { class: "search-content" }, [
+                $props.searchType === 0 ? (vue.openBlock(), vue.createElementBlock(
+                  "view",
+                  {
+                    key: 0,
+                    class: "search-icon",
+                    onClick: _cache[2] || (_cache[2] = ($event) => $data.visible = true)
+                  },
+                  vue.toDisplayString($data.city.label),
+                  1
+                  /* TEXT */
+                )) : vue.createCommentVNode("v-if", true),
+                vue.withDirectives(vue.createElementVNode(
+                  "input",
+                  {
+                    class: "search-input",
+                    "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => $data.keyword = $event),
+                    placeholder: "请输入详细地址"
+                  },
+                  null,
+                  512
+                  /* NEED_PATCH */
+                ), [
+                  [vue.vModelText, $data.keyword]
+                ]),
+                vue.createElementVNode("view", {
+                  class: "search-btn",
+                  onClick: _cache[4] || (_cache[4] = (...args) => $options.searchKeyword && $options.searchKeyword(...args))
+                }, "搜索")
+              ])
+            ],
+            512
+            /* NEED_PATCH */
+          ), [
+            [vue.vShow, $props.showSearch]
           ])
-        ])
-      ]),
+        ],
+        4
+        /* STYLE */
+      ),
       vue.createVNode(_component_tiandituPopupVue, {
         visible: $data.visible,
         onOnClose: _cache[8] || (_cache[8] = ($event) => $data.visible = false)
@@ -13509,6 +13555,10 @@ if (uni.restoreGlobal) {
         type: Number,
         default: 0
       },
+      search: {
+        type: Boolean,
+        default: true
+      },
       icon: {
         type: String,
         default: ""
@@ -13524,12 +13574,26 @@ if (uni.restoreGlobal) {
         startY: 0,
         domMaxHeight: "50vh",
         domMinHeight: "0vh",
-        selectItem: {}
+        selectItem: {},
+        iStatusBarHeight: 0,
+        option: {
+          apikey: 123123
+        }
       };
     },
     created() {
       var that = this;
-      that.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight;
+      const searchHeight = this.search ? 54 : 10;
+      const {
+        statusBarHeight,
+        screenHeight,
+        windowHeight
+      } = uni.getSystemInfoSync();
+      if (screenHeight === windowHeight) {
+        that.iStatusBarHeight = statusBarHeight + searchHeight;
+      } else {
+        that.iStatusBarHeight = 0;
+      }
       uni.getSystemInfo({
         success: function(res) {
           that.winWidth = res.windowWidth;
@@ -13537,19 +13601,6 @@ if (uni.restoreGlobal) {
           that.winTop = res.windowTop;
         }
       });
-    },
-    mounted() {
-      if (typeof window.T === "function") {
-        formatAppLog("warn", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:87", "--------天地图已加载--------");
-        this.initMaps();
-      } else {
-        if (this.apiKey) {
-          const script = document.createElement("script");
-          script.src = "http://api.tianditu.gov.cn/api?v=4.0&tk=" + this.apiKey;
-          script.onload = this.initMaps.bind(this);
-          document.head.appendChild(script);
-        }
-      }
     },
     methods: {
       open(lon, lat) {
@@ -13559,18 +13610,11 @@ if (uni.restoreGlobal) {
             this.$refs.tiandituMapRefs.initCharts(lon, lat);
           });
         } else {
-          formatAppLog("error", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:106", "请传入lon, lat");
+          formatAppLog("error", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:120", "请传入lon, lat");
         }
       },
       close() {
         this.visible = false;
-      },
-      upDateLonLat(lon, lat) {
-        if (lon && lat) {
-          this.$refs.tiandituMapRefs.upDataCharts(lon, lat);
-        } else {
-          formatAppLog("error", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:117", "请传入lon, lat");
-        }
       },
       onConfirm() {
         if (Object.keys(this.selectItem).length) {
@@ -13578,6 +13622,13 @@ if (uni.restoreGlobal) {
           this.$emit("onSelect", this.selectItem);
         } else {
           tools.createMessage("请选择位置");
+        }
+      },
+      upDateLonLat(lon, lat) {
+        if (lon && lat) {
+          this.$refs.tiandituMapRefs.upDataCharts(lon, lat);
+        } else {
+          formatAppLog("error", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:139", "请传入lon, lat");
         }
       },
       tianidtuSearch(value) {
@@ -13648,7 +13699,7 @@ if (uni.restoreGlobal) {
       },
       initMaps() {
         this.$emit("onLoad");
-        formatAppLog("warn", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:196", "--------天地图加载完成--------");
+        formatAppLog("warn", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:210", "--------天地图加载完成--------");
       },
       start(e) {
         const clientY = e.changedTouches[0].clientY;
@@ -13658,12 +13709,12 @@ if (uni.restoreGlobal) {
         const transformY = e.changedTouches[0].clientY - this.startY;
         switch (true) {
           case transformY > 50:
-            formatAppLog("log", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:206", "下划");
+            formatAppLog("log", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:220", "下划");
             this.domMaxHeight = "20vh";
             this.domMinHeight = "0vh";
             break;
           case transformY < -50:
-            formatAppLog("log", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:211", "上划");
+            formatAppLog("log", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:225", "上划");
             this.domMaxHeight = "50vh";
             this.domMinHeight = "50vh";
             break;
@@ -13690,17 +13741,20 @@ if (uni.restoreGlobal) {
         },
         [
           vue.createVNode(_component_tiandituSearchVue, {
+            showSearch: $props.search,
+            style: vue.normalizeStyle({ height: $data.iStatusBarHeight ? $data.iStatusBarHeight + "px" : "fitcontent", paddingTop: $data.iStatusBarHeight ? "20px" : "0" }),
             onOnSearch: $options.tianidtuSearch,
             searchType: $props.searchType,
-            onOnClose: _cache[0] || (_cache[0] = ($event) => $data.visible = false),
+            onOnClose: $options.close,
             onOnConfirm: $options.onConfirm
-          }, null, 8, ["onOnSearch", "searchType", "onOnConfirm"]),
+          }, null, 8, ["showSearch", "style", "onOnSearch", "searchType", "onOnClose", "onOnConfirm"]),
           vue.createVNode(_component_tiandituMap, {
             ref: "tiandituMapRefs",
+            onOnLoadTianDiTu: $options.initMaps,
             onOnSelect: $options.selectPoint,
             apiKey: $props.apiKey,
             customIcon: $props.icon
-          }, null, 8, ["onOnSelect", "apiKey", "customIcon"]),
+          }, null, 8, ["onOnLoadTianDiTu", "onOnSelect", "apiKey", "customIcon"]),
           vue.createCommentVNode(" footer "),
           vue.createElementVNode(
             "view",
@@ -13714,8 +13768,8 @@ if (uni.restoreGlobal) {
                 "view",
                 {
                   class: "list-header",
-                  onTouchstart: _cache[1] || (_cache[1] = (...args) => $options.start && $options.start(...args)),
-                  onTouchend: _cache[2] || (_cache[2] = (...args) => $options.end && $options.end(...args))
+                  onTouchstart: _cache[0] || (_cache[0] = (...args) => $options.start && $options.start(...args)),
+                  onTouchend: _cache[1] || (_cache[1] = (...args) => $options.end && $options.end(...args))
                 },
                 null,
                 32
@@ -13730,6 +13784,11 @@ if (uni.restoreGlobal) {
                       key: index,
                       onClick: ($event) => $options.selectCard(item)
                     }, [
+                      vue.renderSlot(_ctx.$slots, "cards", {
+                        row: item,
+                        index: $data.selectItem,
+                        onClick: ($event) => $options.selectCard(item)
+                      }, void 0, true),
                       !_ctx.$slots.cards ? (vue.openBlock(), vue.createElementBlock(
                         "view",
                         {
@@ -13798,9 +13857,10 @@ if (uni.restoreGlobal) {
     },
     methods: {
       onLoad() {
-        formatAppLog("log", "at pages/index/index.vue:39", "天地图加载完成");
+        formatAppLog("log", "at pages/index/index.vue:40", "天地图加载完成");
       },
       onSelect(value) {
+        formatAppLog("log", "at pages/index/index.vue:43", "value", value);
         this.point = value;
       },
       selectMap() {
@@ -13811,6 +13871,7 @@ if (uni.restoreGlobal) {
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_zhuo_tianditu_select = resolveEasycom(vue.resolveDynamicComponent("zhuo-tianditu-select"), __easycom_0);
     return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
+      vue.createElementVNode("view", { style: { "height": "47px" } }),
       vue.createElementVNode("button", {
         onClick: _cache[0] || (_cache[0] = (...args) => $options.selectMap && $options.selectMap(...args))
       }, " 选择位置 "),
@@ -13840,6 +13901,7 @@ if (uni.restoreGlobal) {
       vue.createCommentVNode(" 天地图使用示例 "),
       vue.createVNode(_component_zhuo_tianditu_select, {
         ref: "tMap",
+        search: true,
         icon: $data.icon,
         searchType: 0,
         "api-key": "e122b0518f43b32dcc256edbae20a5d1",

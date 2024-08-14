@@ -38,7 +38,12 @@ export function createRequest(url, data = {}, loading = false, method = 'GET', h
                 if (res.statusCode === 200) {
                     resolve(res.data)
                 } else {
-                    reject(new Error('请求错位'))
+                    if (res.data.msg) {
+                        const str = typeof res.data.resolve === 'string' ? ',' + res.data.resolve :
+                            ''
+                        createMessage(res.data.msg + str)
+                    }
+                    reject(new Error('请求错误'))
                 }
             },
             fail: (err) => {
