@@ -2,7 +2,7 @@
     <view>
         <view v-if="visible" class="mask" :style="{ height: (winHeight)+ 'px',width: winWidth+'px',top: winTop+'px'}">
             <tiandituSearchVue :showSearch="search"
-                :style="{ height: iStatusBarHeight ?  iStatusBarHeight + 'px' : 'fitcontent', paddingTop: iStatusBarHeight ?  '20px' : '0' }"
+                :searchStyle="{ height: iStatusBarHeight ?  iStatusBarHeight + 'px' : 'fitcontent', paddingTop: iStatusBarHeight ?  '20px' : '0' }"
                 @onSearch="tianidtuSearch" :searchType="searchType" @onClose="close" @onConfirm="onConfirm">
             </tiandituSearchVue>
             <tiandituMap ref="tiandituMapRefs" @onLoadTianDiTu="initMaps" @onSelect="selectPoint" :apiKey="apiKey"
@@ -206,8 +206,8 @@
                 this.selectItem = e
             },
             initMaps() {
-                this.$emit('onLoad')
                 console.warn('--------天地图加载完成--------');
+                this.$emit('onLoad')
             },
             start(e) {
                 const clientY = e.changedTouches[0].clientY

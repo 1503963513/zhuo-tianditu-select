@@ -70,7 +70,7 @@ if (uni.restoreGlobal) {
               const str = typeof res.data.resolve === "string" ? "," + res.data.resolve : "";
               createMessage(res.data.msg + str);
             }
-            reject(new Error("请求错误"));
+            throw new Error("请求错误" + url);
           }
         },
         fail: (err) => {
@@ -13326,9 +13326,9 @@ if (uni.restoreGlobal) {
         type: Number,
         default: 0
       },
-      style: {
-        type: Object,
-        default: {}
+      searchStyle: {
+        type: Object || Array,
+        default: () => ({})
       },
       showSearch: {
         type: Boolean,
@@ -13405,7 +13405,7 @@ if (uni.restoreGlobal) {
       vue.createElementVNode(
         "view",
         {
-          style: vue.normalizeStyle($props.style),
+          style: vue.normalizeStyle($props.searchStyle),
           class: "search-zhuozhuo"
         },
         [
@@ -13698,8 +13698,8 @@ if (uni.restoreGlobal) {
         this.selectItem = e;
       },
       initMaps() {
+        formatAppLog("warn", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:209", "--------天地图加载完成--------");
         this.$emit("onLoad");
-        formatAppLog("warn", "at uni_modules/zhuo-tianditu-select/components/zhuo-tianditu-select/zhuo-tianditu-select.vue:210", "--------天地图加载完成--------");
       },
       start(e) {
         const clientY = e.changedTouches[0].clientY;
@@ -13742,12 +13742,12 @@ if (uni.restoreGlobal) {
         [
           vue.createVNode(_component_tiandituSearchVue, {
             showSearch: $props.search,
-            style: vue.normalizeStyle({ height: $data.iStatusBarHeight ? $data.iStatusBarHeight + "px" : "fitcontent", paddingTop: $data.iStatusBarHeight ? "20px" : "0" }),
+            searchStyle: { height: $data.iStatusBarHeight ? $data.iStatusBarHeight + "px" : "fitcontent", paddingTop: $data.iStatusBarHeight ? "20px" : "0" },
             onOnSearch: $options.tianidtuSearch,
             searchType: $props.searchType,
             onOnClose: $options.close,
             onOnConfirm: $options.onConfirm
-          }, null, 8, ["showSearch", "style", "onOnSearch", "searchType", "onOnClose", "onOnConfirm"]),
+          }, null, 8, ["showSearch", "searchStyle", "onOnSearch", "searchType", "onOnClose", "onOnConfirm"]),
           vue.createVNode(_component_tiandituMap, {
             ref: "tiandituMapRefs",
             onOnLoadTianDiTu: $options.initMaps,
@@ -13856,7 +13856,7 @@ if (uni.restoreGlobal) {
     mounted() {
     },
     methods: {
-      onLoad() {
+      onLoadComplite() {
         formatAppLog("log", "at pages/index/index.vue:40", "天地图加载完成");
       },
       onSelect(value) {
@@ -13905,7 +13905,7 @@ if (uni.restoreGlobal) {
         icon: $data.icon,
         searchType: 0,
         "api-key": "e122b0518f43b32dcc256edbae20a5d1",
-        onOnLoad: $options.onLoad,
+        onOnLoad: $options.onLoadComplite,
         onOnSelect: $options.onSelect
       }, {
         default: vue.withCtx(() => [

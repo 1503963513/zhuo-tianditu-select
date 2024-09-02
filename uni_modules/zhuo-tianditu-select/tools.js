@@ -43,7 +43,8 @@ export function createRequest(url, data = {}, loading = false, method = 'GET', h
                             ''
                         createMessage(res.data.msg + str)
                     }
-                    reject(new Error('请求错误'))
+                    throw new Error('请求错误' + url)
+                    reject()
                 }
             },
             fail: (err) => {

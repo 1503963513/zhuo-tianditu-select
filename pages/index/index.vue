@@ -9,7 +9,7 @@
         </view>
         <!-- 天地图使用示例 -->
         <zhuo-tianditu-select ref="tMap" :search="true" :icon="icon" :searchType="0"
-            api-key="e122b0518f43b32dcc256edbae20a5d1" @onLoad="onLoad" @onSelect="onSelect">
+            api-key="e122b0518f43b32dcc256edbae20a5d1" @onLoad="onLoadComplite" @onSelect="onSelect">
             <!-- 自定义cardList样式 事件有绑定，自己写样式即可 -->
             <!-- <template v-slot:cards="{row, index}">{{row.address}}</template> -->
         </zhuo-tianditu-select>
@@ -36,7 +36,7 @@
         },
         mounted() {},
         methods: {
-            onLoad() {
+            onLoadComplite() {
                 console.log('天地图加载完成')
             },
             onSelect(value) {

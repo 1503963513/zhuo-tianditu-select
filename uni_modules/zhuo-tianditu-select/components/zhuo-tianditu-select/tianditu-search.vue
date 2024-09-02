@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view :style="style" class="search-zhuozhuo">
+        <view :style="searchStyle" class="search-zhuozhuo">
             <view class="hearderback">
                 <view class="back" @click="close">关 闭</view>
                 <view class="confirm" @click="confirm">完 成</view>
@@ -68,9 +68,9 @@
                 type: Number,
                 default: 0,
             },
-            style: {
-                type: Object,
-                default: {},
+            searchStyle: {
+                type: Object || Array,
+                default: () => ({}),
             },
             showSearch: {
                 type: Boolean,
