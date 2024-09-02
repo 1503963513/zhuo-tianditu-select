@@ -82,7 +82,7 @@ this.$refs.tMap.open(103.397894, 32.126855)
         </view>
         <!-- 天地图使用示例 -->
         <zhuo-tianditu-select ref="tMap" :icon="icon" :searchType="0" api-key="******"
-            @onLoad="onLoad" @onSelect="onSelect">
+            @onLoad="LoadComplite" @onSelect="onSelect">
             <!-- 自定义cardList样式 事件有绑定，自己写样式即可 -->
             <!-- <template v-slot:cards="{row, index}">{{row.address}}</template> -->
         </zhuo-tianditu-select>
@@ -109,7 +109,7 @@ this.$refs.tMap.open(103.397894, 32.126855)
         },
         mounted() {},
         methods: {
-            onLoad() {
+            LoadComplite() {
                 console.log('天地图加载完成')
             },
             onSelect(value) {
