@@ -1,5 +1,5 @@
 ## 天地图位置选择
->  **组件名：zhuo-tianditu-select**
+>  **组件名：zhuo-tianditu-select** [Dcloud直达链接](https://ext.dcloud.net.cn/plugin?id=18738)
 
 ### 安装方式
 
